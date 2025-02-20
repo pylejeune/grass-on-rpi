@@ -1,0 +1,55 @@
+
+# GRASS Token et DePIN : Installation sur Raspberry Pi
+
+GRASS Network qui exploite le concept de DePIN (Decentralized Physical Infrastructure Network) pour miner des tokens
+
+```
+sudo apt update && sudo apt upgrade -y
+```
+
+
+Installer Docker (souvent requis pour DePIN nodes) :
+
+
+```
+sudo apt install docker.io -y
+```
+
+Pour éviter tout problème et pouvoir executer docker sans sudo
+
+```
+sudo usermod -aG docker $USER
+newgrp docker
+```
+Ajouter votre login et mot de passe en variable d'environement
+
+```
+export GRASS_USER=username
+export GRASS_PASS=password
+```
+Démarrage container Grass Node : https://github.com/MRColorR/get-grass
+```
+docker run -d --name grass -h my_device -e GRASS_USER=your_email -e GRASS_PASS=your_password mrcolorrain/grass
+```
+
+Vérifier que le container est bien démarré
+
+```
+docker ps
+```
+
+Ensuite il faut suivre les logs du node grass
+
+```
+docker logs -f grass
+```
+
+L'execution attend que l'on se log sur l'interface avec notre login et mon de passe.
+
+```
+curl -X POST "https://app.getgrass.io/" \
+     -d "username=${GRASS_USER}&password=${GRASS_PASS}" \
+     -c cookies.txt
+```
+
+Une fois logué le node grass est en route et votre connexion est partagée, vous commencez alors à générer des points qui seront transformés en token en fin de phase.
