@@ -49,5 +49,24 @@ curl -X POST "https://app.getgrass.io/" \
      -c cookies.txt
 ```
 
+## Redémarrage en cas de crash du serveur
+
+Créer ce script et l'appeler depuis un service
+
+```sh
+#!/bin/bash
+
+export GRASS_USER=###YOUR_EMAIL###
+export GRASS_PASS=###YOUR_PASSWORD###
+docker run -d --rm --name grass -h my_device -e GRASS_USER=$GRASS_USER -e GRASS_PASS=$GRASS_PASS mrcolorrain/grass
+curl -X POST "https://app.getgrass.io/" \
+     -d "username=${GRASS_USER}&password=${GRASS_PASS}" \
+     -c cookies.txt
+
+while docker ps | grep -q grass; do
+    sleep 1
+done
+```
+
 ## Finalisation
 Une fois logué, le node Grass est en route et votre connexion est partagée. Vous commencez alors à générer des points qui seront transformés en tokens en fin de phase.
